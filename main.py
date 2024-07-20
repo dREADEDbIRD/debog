@@ -29,7 +29,7 @@ client = discord.Client(intents=intents)
 
 load_dotenv()
 logChannelId = (os.getenv('logChannel'))
-voiceMaster = int((os.getenv('voiceMaster')))  # VoiceMaster
+voiceMaster = int((os.getenv('voiceMaster')))
 owoner = int((os.getenv('owoner')))
 
 
@@ -57,8 +57,7 @@ async def on_message_delete(message):
 
 @client.event
 async def on_voice_state_update(member, before, after):
-    # Log if a Member joinned to a Voice Channel.
-    if before.channel is None:
+    if before.channel is None:  # Log if a Member joinned to a Voice Channel.
         if after.channel.id == voiceMaster:
             return
         elif after.channel.id:
@@ -72,7 +71,7 @@ async def on_voice_state_update(member, before, after):
             )
             embed.set_footer(text='raicanLog-1.3')
             await logChannel.send(embed=embed)
-    if after.channel is None:                         # Log if a Member Left a Voice Channel
+    if after.channel is None:  # Log if a Member Left a Voice Channel
         if before.channel.id == voiceMaster:
             return
         else:
@@ -87,10 +86,8 @@ async def on_voice_state_update(member, before, after):
             embed.set_footer(text='raicanLog-1.3')
             await logChannel.send(embed=embed)
 
-    # Log if a Member Switch to another Voice Channel.
-    if before.channel and after.channel and after.channel.id != voiceMaster:
-        # Log if a Member Created a Voice Channel using VoiceMaster.
-        if before.channel.id == voiceMaster:
+    if before.channel and after.channel and after.channel.id != voiceMaster:  # Log if a Member Switch to another Voice Channel.
+        if before.channel.id == voiceMaster:  # Log if a Member Created a Voice Channel using VoiceMaster.
             logger.info(f'{member.name} Created {after.channel.name}')
             logChannel = client.get_channel(int(logChannelId))
             embed = discord.Embed(
